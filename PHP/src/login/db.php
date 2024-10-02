@@ -1,13 +1,13 @@
 <?php
-$servername = "db";  // docker-compose.yml begiratu
-$username = "root";
-$password = "root";
+$host = 'db';  // Cambia según tu configuración
+$db = 'mydatabase';  // Cambia según tu configuración
+$user = 'root';  // Cambia según tu configuración
+$pass = 'root';  // Cambia según tu configuración
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
 }
-echo "Connected successfully";
+?>

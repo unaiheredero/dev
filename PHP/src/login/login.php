@@ -1,11 +1,6 @@
 <?php
 session_start();
-
-// Arreglo de usuarios predefinidos
-$users = [
-    'u1' => '1',
-    'u2' => '2'
-];
+require_once './db.php'; // Conexión a la base de datos
 
 $error = '';
 
@@ -13,8 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // Buscar el usuario en la base de datos
+    $stmt = $pdo->prepare("SELECT * FROM test WHERE username = :username");
+    $stmt->execute(['username' => $username]);
+    $user = $stmt->fetch();
+
     // Validación de credenciales
-    if (isset($users[$username]) && $users[$username] === $password) {
+    if ($user && password_verify($password, $user['password'])) {
         // Guardar el nombre de usuario en la sesión
         $_SESSION['username'] = $username;
         header('Location: welcome.php');
@@ -43,5 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="password" name="password" id="password" required><br><br>
         <button type="submit">Iniciar sesión</button>
     </form>
+    <br><br>
+    <a href="register.php">Registrar usuario</a>
 </body>
 </html>
