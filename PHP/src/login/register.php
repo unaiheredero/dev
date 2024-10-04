@@ -3,7 +3,6 @@ session_start();
 require_once './db.php'; // Asegúrate de que este archivo contenga la clase Database
 require_once './User.php'; // Asegúrate de incluir el archivo de la clase User
 
-$error = '';
 $database = new Database('db', 'mydatabase', 'root', 'root'); // Cambia estos valores
 $dbConnection = $database->getConnection();
 $userModel = new User($dbConnection);

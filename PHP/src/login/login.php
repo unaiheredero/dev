@@ -13,11 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     // Intentar iniciar sesión
-    $user = $userModel->login($username, $password);
-
-    if ($user) {
-        // Guardar el nombre de usuario en la sesión
-        $_SESSION['username'] = $username;
+    if ($userModel->login($username, $password)) {
+        $_SESSION['username'] = $username; // Guardar el nombre de usuario en la sesión
         header('Location: welcome.php');
         exit();
     } else {

@@ -3,11 +3,7 @@ class Database {
     private $pdo;
 
     public function __construct($host, $db, $user, $pass) {
-        $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
-        $this->pdo = new PDO($dsn, $user, $pass, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]);
+        $this->pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
     }
 
     public function getConnection() {

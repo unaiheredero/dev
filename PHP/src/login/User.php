@@ -11,20 +11,15 @@ class User {
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['password'])) {
-            return $user; // Devuelve el usuario si las credenciales son correctas
-        }
-
-        return false; // Devuelve false si las credenciales son incorrectas
+        // Verificar si el usuario existe y si la contraseña es válida
+        return ($user && password_verify($password, $user['password'])) ? $user : false;
     }
     
     public function register($username, $password) {
-        // Encriptar la contraseña
-        $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-
-        // Preparar la consulta para insertar el usuario
+        $password_hashed = password_hash($password, PASSWORD_DEFAULT); // Encriptar la contraseña
         $stmt = $this->db->prepare("INSERT INTO test (username, password) VALUES (:username, :password)");
 
+        // Retorna true si el registro es exitoso, false si falla
         return $stmt->execute(['username' => $username, 'password' => $password_hashed]);
     }
 }
