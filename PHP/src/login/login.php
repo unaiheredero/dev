@@ -1,20 +1,21 @@
 <?php
 session_start();
-require_once './db.php'; // Conexión a la base de datos
+require_once './db.php'; // Asegúrate de que este archivo contenga la clase Database
+require_once './User.php'; // Incluye el archivo de la clase User
 
 $error = '';
+$database = new Database('db', 'mydatabase', 'root', 'root'); // Cambia estos valores
+$dbConnection = $database->getConnection();
+$userModel = new User($dbConnection);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Buscar el usuario en la base de datos
-    $stmt = $pdo->prepare("SELECT * FROM test WHERE username = :username");
-    $stmt->execute(['username' => $username]);
-    $user = $stmt->fetch();
+    // Intentar iniciar sesión
+    $user = $userModel->login($username, $password);
 
-    // Validación de credenciales
-    if ($user && password_verify($password, $user['password'])) {
+    if ($user) {
         // Guardar el nombre de usuario en la sesión
         $_SESSION['username'] = $username;
         header('Location: welcome.php');
