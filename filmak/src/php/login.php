@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Intentar iniciar sesión
     if ($userModel->login($username, $password)) {
         $_SESSION['username'] = $username; // Guardar el nombre de usuario en la sesión
-        header('Location: welcome.php');
+        header('Location: insert_film.php');
         exit();
     } else {
         $error = 'Usuario o contraseña incorrectos';
